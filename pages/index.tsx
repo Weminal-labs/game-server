@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Index() {
   const { user, isLoading } = useZkLoginSession();
 
-  if (isLoading) return <p>Loading zkLogin session...</p>;
+  if (isLoading) return <p>Loading zkLogin session google</p>;
 
   if (user) {
     // Signed-in experience.

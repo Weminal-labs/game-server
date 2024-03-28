@@ -14,6 +14,8 @@ import {
 } from "@shinami/nextjs-zklogin/client";
 import { useRouter } from "next/router";
 
+import { Button, Image } from "@nextui-org/react";
+
 // This page should be installed at route "/auth/login".
 // If you need to use a different path, set env NEXT_PUBLIC_LOGIN_PAGE_PATH to override the default,
 // and update "callbackBaseUrl" accordingly.
@@ -26,23 +28,25 @@ export default withNewZkLoginSession(
 
     // Render sign-in options based on what's configured.
     return (
-      <>
+      <div className="w-full h-full flex justify-center items-center">
         {GOOGLE_CLIENT_ID && (
-          <div>
-            <button
+          <div className="text-white">
+            <Button
+              startContent={<Image src={"/google.svg"} alt="icon"/>}
+              className="font-semibold"
               onClick={() => {
                 router.replace(
                   getGoogleAuthUrl(
                     session,
                     GOOGLE_CLIENT_ID!,
                     new URL("google", callbackBaseUrl),
-                    redirectTo
+                    redirectTo 
                   )
                 );
               }}
             >
               Sign in with Google
-            </button>
+            </Button>
           </div>
         )}
         {FACEBOOK_CLIENT_ID && (
@@ -81,7 +85,7 @@ export default withNewZkLoginSession(
             </button>
           </div>
         )}
-      </>
+      </div>
     );
   }
 );
