@@ -32,7 +32,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
     },
   });
 
-  return { gaslessTxBytes, gasBudget: 5_000_000 };
+  return { gaslessTxBytes, gasBudget: 1_000_000 };
 };
 
 /**
