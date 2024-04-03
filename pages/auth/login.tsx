@@ -40,7 +40,7 @@ export default withNewZkLoginSession(
                     session,
                     GOOGLE_CLIENT_ID!,
                     new URL("google", callbackBaseUrl),
-                    redirectTo 
+                    redirectTo
                   )
                 );
               }}
