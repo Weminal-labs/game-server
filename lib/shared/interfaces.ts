@@ -21,3 +21,10 @@ export const RecentTxsResponse = object({
   txDigests: array(string()),
 });
 export type RecentTxsResponse = Infer<typeof RecentTxsResponse>;
+
+export const ResponseData = object({
+  wallet: string(),
+  jwt: string(),
+});
+
+export type ResponseData = Infer<typeof ResponseData>;
