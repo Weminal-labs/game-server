@@ -23,7 +23,7 @@ export default withNewZkLoginSession(
   () => relativeToCurrentEpoch(sui),
   ({ session }) => {
     const router = useRouter();
-    const redirectTo = first(process.env.NODE_ENV === "development" ? ["http://localhost:3000/protected"] : ["https://game-server-vert.vercel.app/protected"]);
+    const redirectTo = first(process.env.SITE_NAME === "Dev" ? "http://localhost:3000/protected" : "https://game-server-vert.vercel.app/protected");
     const callbackBaseUrl = new URL("auth/", window.location.origin);
 
     // Render sign-in options based on what's configured.
