@@ -30,7 +30,7 @@ export default function Index() {
   });
   const [result, setResult] = useState<WeatherResponse>();
   const [playerData, setPlayerData] = useState<PlayerDataResponse>();
-  const [weather, setWeather] = useState();
+  const [weather, setWeather] = useState<any>();
   const { mutateAsync: getWeather, isPending: isAdding } = useWeatherMutation();
   const { mutateAsync: getPlayerData, isPending: isGettingData } =
     usePlayerDataMutation();
@@ -45,12 +45,21 @@ export default function Index() {
     }
   }, [user, loadingProgression, isLoading, localSession]);
 
+  useEffect(() => {
+    if(playerData && weather) {
+      // sendMessage("GameControll", "ReceiveWeather", JSON.stringify(weather));
+      // sendMessage("GameControll", "ReceiveAddress", JSON.stringify(playerData));
+      sendMessage("GameControll", "stopLoadingScreen")
+    }
+  }, [playerData, weather])
+
   //send data when start game
   useEffect(() => {
     if (localSession && isRequiresData) {
       //get weather data
       getWeatherCity().then((data) => {
         // setWeather(data);
+        setWeather(data);
         sendMessage("WeatherControll", "ReceiveWeather", JSON.stringify(data));
       });
 
