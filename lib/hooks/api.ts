@@ -11,9 +11,13 @@ import {
 } from "@tanstack/react-query";
 import { mask } from "superstruct";
 import {
-  AddRequest,
-  AddResponse,
   RecentTxsResponse,
+  WeatherRequest,
+  WeatherResponse,
+  PlayerDataRequest,
+  PlayerDataResponse,
+  HeroRequest,
+  HeroResponse
 } from "../shared/interfaces";
 
 /**
@@ -24,23 +28,68 @@ import {
  * - Sign the transaction block with the local ephemeral key pair.
  * - Call /api/add/exec to assemble the zkLogin signature and execute the signed transaction block.
  */
-export function useAddMutation(): UseMutationResult<
-  AddResponse,
+export function useWeatherMutation(): UseMutationResult<
+  WeatherResponse,
   ApiError,
-  AddRequest & WithKeyPair
-> {
+  WeatherRequest & WithKeyPair
+>{
   const qc = useQueryClient();
   return useMutation({
     mutationFn: apiTxExecMutationFn({
-      baseUri: () => "/api/add",
+      baseUri: () => "/api/weather",
       body: ({ keyPair, ...req }) => req,
-      resultSchema: AddResponse,
-    }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["api", "recent_txs"] });
-    },
+      resultSchema: WeatherResponse,
+    })
   });
 }
+
+export function usePlayerDataMutation(): UseMutationResult<
+  PlayerDataResponse,
+  ApiError,
+  PlayerDataRequest & WithKeyPair
+>{
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: apiTxExecMutationFn({
+      baseUri: () => "/api/get_player_data",
+      body: ({ keyPair, ...req }) => req,
+      resultSchema: PlayerDataResponse,
+    })
+  });
+}
+
+export function useNewHeroMutation(): UseMutationResult<
+  HeroResponse,
+  ApiError,
+  HeroRequest & WithKeyPair
+>{
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: apiTxExecMutationFn({
+      baseUri: () => "/api/new_hero",
+      body: ({ keyPair, ...req }) => req,
+      resultSchema: HeroResponse,
+    })
+  });
+}
+
+// export function useAddMutation(): UseMutationResult<
+//   AddResponse,
+//   ApiError,
+//   AddRequest & WithKeyPair
+// > {
+//   const qc = useQueryClient();
+//   return useMutation({
+//     mutationFn: apiTxExecMutationFn({
+//       baseUri: () => "/api/add",
+//       body: ({ keyPair, ...req }) => req,
+//       resultSchema: AddResponse,
+//     }),
+//     onSuccess: () => {
+//       qc.invalidateQueries({ queryKey: ["api", "recent_txs"] });
+//     },
+//   });
+// }
 
 /**
  * An example query to fetch recent transactions from the user's wallet address.

@@ -13,9 +13,9 @@ export default withZkLoginUserRequired<RecentTxsResponse>(
       limit: 5,
     });
 
-    console.log("check", user)
+    // console.log("check", user)
 
-    console.log("Recent transactions for zkLogin wallet", txs.data);
+    // console.log("Recent transactions for zkLogin wallet", txs.data);
 
     res.json({ txDigests: txs.data.map((x) => x.digest) });
   }

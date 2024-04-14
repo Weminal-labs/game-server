@@ -23,7 +23,7 @@ export default withNewZkLoginSession(
   () => relativeToCurrentEpoch(sui),
   ({ session }) => {
     const router = useRouter();
-    const redirectTo = first(router.query.redirectTo);
+    const redirectTo = first("http://localhost:3000/protected");
     const callbackBaseUrl = new URL("auth/", window.location.origin);
 
     // Render sign-in options based on what's configured.
