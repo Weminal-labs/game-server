@@ -11,6 +11,7 @@
     "@hookform/resolvers": "^2.6.1",
     "@nextui-org/react": "^2.2.10",
     "@shinami/nextjs-zklogin": "^0.2.4",
+    "@vercel/analytics": "^1.2.2",
     "axios": "^1.6.8",
     "express-jwt": "^6.0.0",
     "framer-motion": "^11.0.22",
