@@ -1,4 +1,5 @@
 import { getSuiExplorerAccountUrl } from "@/lib/hooks/sui";
+import { Analytics } from "@vercel/analytics/react"
 import { AUTH_API_BASE, LOGIN_PAGE_PATH } from "@shinami/nextjs-zklogin";
 import { useZkLoginSession } from "@shinami/nextjs-zklogin/client";
 import { useCallback, useEffect } from "react";
@@ -160,6 +161,7 @@ export default function Index() {
   return (
     <>
       <Unity unityProvider={unityProvider} className="w-screen h-screen" />
+      <Analytics/>
     </>
   );
 }
