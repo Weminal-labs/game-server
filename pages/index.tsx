@@ -41,6 +41,7 @@ export default function Index() {
 
   //check if user is logged in then start the game
   useEffect(() => {
+    console.log(user?.wallet)
     if (!isLoading && localSession && user && loadingProgression === 1) {
       sendMessage("LoginController", "LoadScene");
     }
