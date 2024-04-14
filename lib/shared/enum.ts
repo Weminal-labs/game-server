@@ -1,0 +1,5 @@
+export enum URL_AVATAR_HERO {
+    "https://cdn.fbsbx.com/v/t59.2708-21/437397108_1145325963329536_6041657082056375057_n.gif?_nc_cat=105&ccb=1-7&_nc_sid=cf94fc&_nc_eui2=AeHkMZzaQBgm6IkvWQHAx3kuQPKWpvoDokNA8pam-gOiQ6qn2t0TtVf3bBMvfqTXYgvU62JJoyqi7l0pkvBTEsei&_nc_ohc=THy065sv-44Ab7yQ-aL&_nc_ht=cdn.fbsbx.com&oh=03_AdXqgf4kDVYAXd4MZYi2c_ToHj0vuqDbPxM2j3_-N7mJ_w&oe=661C81E8",
+    "https://cdn.fbsbx.com/v/t59.2708-21/437209237_695021005963187_2807560691722191403_n.gif?_nc_cat=105&ccb=1-7&_nc_sid=cf94fc&_nc_eui2=AeGMNGvCCJegqjG0xPfO6hZ_R2U_a0RU4ANHZT9rRFTgA2nsetsPL7NMamqtAa7P-MruN-Y1s5xbFZazJSjL_Sxg&_nc_ohc=1VSjWvh1vKkAb58HdJK&_nc_ht=cdn.fbsbx.com&oh=03_AdVF5QidYFjEYu687F2ELjlSOFI5biDJvctPaprNw0CCMg&oe=661C93A6",
+    "https://cdn.fbsbx.com/v/t59.2708-21/437277422_813661877273011_5445306244730383063_n.gif?_nc_cat=111&ccb=1-7&_nc_sid=cf94fc&_nc_eui2=AeEq1OxgLTPuI3GE2NsWoh7GYMiHt7YDZvZgyIe3tgNm9ufm2miL6jilCBu37lK8Z8E9fDqlZV2h8gpYwo72vQxo&_nc_ohc=LWOtgEwpdfoAb7peI0f&_nc_ht=cdn.fbsbx.com&oh=03_AdWV7lSbtGsTPVpQY4eUaI5KpUr5UK1bg5W788iKiOng3g&oe=661C7F02"
+}
