@@ -1,6 +1,3 @@
-import { useAddMutation, useRecentTxsQuery, useWeatherMutation } from "@/lib/hooks/api";
-import { getSuiExplorerTransactionUrl } from "@/lib/hooks/sui";
-import { WeatherResponse } from "@/lib/shared/interfaces";
 import { withZkLoginSessionRequired } from "@shinami/nextjs-zklogin/client";
 import Link from "next/link";
 import { use, useState, useEffect } from "react";
