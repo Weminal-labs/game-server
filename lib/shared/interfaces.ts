@@ -1,5 +1,3 @@
-import exp from "constants";
-import { max } from "rxjs";
 import {
   Infer,
   array,
@@ -9,7 +7,6 @@ import {
   string,
   boolean,
 } from "superstruct";
-import { number } from "yup";
 
 //weather
 export const WeatherRequest = object({
@@ -93,6 +90,86 @@ export const HeroResponse = object({
 });
 
 export type HeroResponse = Infer<typeof HeroResponse>;
+
+//user resources
+export const UpdateUserResourcesRequest = object({
+  wood: integer(),
+  gold: integer(),
+  meat: integer(),
+});
+
+export type UpdateUserResourcesRequest = Infer<
+  typeof UpdateUserResourcesRequest
+>;
+
+export const UpdateUserResourcesResult = object({
+  hero_id: string(),
+  id: string(),
+  owner: string(),
+});
+
+export type UpdateUserResourcesResult = Infer<typeof UpdateUserResourcesResult>;
+
+export const UpdateUserResourcesResponse = object({
+  ...UpdateUserResourcesResult.schema,
+  txDigest: string(),
+});
+
+export type UpdateUserResourcesResponse = Infer<
+  typeof UpdateUserResourcesResponse
+>;
+
+//user level
+export const UpdateUserLevelRequest = object({
+  level: integer(),
+  exp: integer(),
+  max_exp: integer(),
+});
+
+export type UpdateUserLevelRequest = Infer<typeof UpdateUserLevelRequest>;
+
+export const UpdateUserLevelResult = object({});
+
+export type UpdateUserLevelResult = Infer<typeof UpdateUserLevelResult>;
+
+export const UpdateUserLevelResponse = object({
+  ...UpdateUserLevelResult.schema,
+  txDigest: string(),
+});
+
+export type UpdateUserLevelResponse = Infer<typeof UpdateUserLevelResponse>;
+
+//update hero
+export const UpdateHeroRequest = object({
+  data: array(object({
+    id: string(),
+    name: string(),
+    description: string(),
+    location_x: integer() || undefined,
+    location_y: integer() || undefined,
+    health: integer(),
+    max_health: integer(),
+    damage: integer(),
+    speed: integer(),
+    level: integer(),
+    exp: integer(),
+    max_exp: integer(),
+    hero_id: string(),
+  })),
+});
+
+export type UpdateHeroRequest = Infer<typeof UpdateHeroRequest>;
+
+export const UpdateHeroResult = object({});
+
+export type UpdateHeroResult = Infer<typeof UpdateHeroResult>;
+
+export const UpdateHeroResponse = object({
+  ...UpdateHeroResult.schema,
+  txDigest: string(),
+});
+
+export type UpdateHeroResponse = Infer<typeof UpdateHeroResponse>;
 
 export const RecentTxsResponse = object({
   txDigests: array(string()),

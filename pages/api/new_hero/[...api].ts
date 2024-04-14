@@ -18,7 +18,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
   const [error, body] = validate(req.body, HeroRequest);
   if (error) throw new InvalidRequest(error.message);
 
-  console.log("Preparing add tx for zkLogin wallet", wallet);
+  console.log("Preparing add tx for zkLogin wallet", wallet, body);
 
   const gaslessTxBytes = await buildGaslessTransactionBytes({
     sui,
@@ -26,6 +26,15 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
       txb.moveCall({
         target: `${MOVE_PACKAGE_ID}::game::new_herro`,
         arguments: [
+          txb.pure.u16(body.type_hero),
+          txb.pure.u16(body.max_health),
+          txb.pure.u16(body.damage),
+          txb.pure.u16(body.speed),
+          txb.pure.u16(body.exp),
+          txb.pure.u16(body.max_exp),
+          txb.pure.string(body.name),
+          txb.pure.string(body.description),
+          txb.pure.string(body.url),
           txb.object(MOVE_OBJECT_ID),
         ],
       });
@@ -38,7 +47,10 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
 /**
  * Parses the transaction response.
  */
-const parseTxRes: TransactionResponseParser<HeroResponse> = async (_, txRes) => {
+const parseTxRes: TransactionResponseParser<HeroResponse> = async (
+  _,
+  txRes
+) => {
   // Requires "showEvents: true" in tx response options.
   const event = first(txRes.events);
   if (!event) throw new Error("Event missing from tx response");

@@ -17,7 +17,9 @@ import {
   PlayerDataRequest,
   PlayerDataResponse,
   HeroRequest,
-  HeroResponse
+  HeroResponse,
+  UpdateHeroRequest,
+  UpdateHeroResponse,
 } from "../shared/interfaces";
 
 /**
@@ -67,6 +69,21 @@ export function useNewHeroMutation(): UseMutationResult<
   return useMutation({
     mutationFn: apiTxExecMutationFn({
       baseUri: () => "/api/new_hero",
+      body: ({ keyPair, ...req }) => req,
+      resultSchema: HeroResponse,
+    })
+  });
+}
+
+export function useUpdateHeroMutation(): UseMutationResult<
+  UpdateHeroResponse,
+  ApiError,
+  UpdateHeroRequest & WithKeyPair
+>{
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: apiTxExecMutationFn({
+      baseUri: () => "/api/update_hero",
       body: ({ keyPair, ...req }) => req,
       resultSchema: HeroResponse,
     })
