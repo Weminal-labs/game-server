@@ -26,8 +26,8 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
         txb.moveCall({
           target: `${MOVE_PACKAGE_ID}::game::update_hero`,
           arguments: [
-            txb.pure.u16(hero.location_x || 0),
-            txb.pure.u16(hero.location_y || 0),
+            txb.pure.u16(hero.location_x < 0 ? 0 : hero.location_x),
+            txb.pure.u16(hero.location_y < 0 ? 0 : hero.location_y),
             txb.pure.u16(hero.health),
             txb.pure.u16(hero.max_health),
             txb.pure.u16(hero.damage),
@@ -35,7 +35,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
             txb.pure.u16(hero.level),
             txb.pure.u16(hero.exp),
             txb.pure.u16(hero.max_exp),
-            txb.object(hero.hero_id),
+            txb.object(hero.id),
             txb.object(MOVE_OBJECT_ID),
           ],
         });
@@ -43,7 +43,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
     },
   });
 
-  return { gaslessTxBytes, gasBudget: 1_000_000_00 };
+  return { gaslessTxBytes, gasBudget: 5_000_000_0 };
 };
 
 /**

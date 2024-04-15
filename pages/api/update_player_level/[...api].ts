@@ -24,7 +24,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
     sui,
     build: async (txb) => {
       txb.moveCall({
-        target: `${MOVE_PACKAGE_ID}::game::update_player_resources`,
+        target: `${MOVE_PACKAGE_ID}::game::update_player_level`,
         arguments: [
           txb.pure.u16(body.exp),
           txb.pure.u32(body.level),
@@ -35,7 +35,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
     },
   });
 
-  return { gaslessTxBytes, gasBudget: 1_000_000_00 };
+  return { gaslessTxBytes, gasBudget: 5_000_000_0 };
 };
 
 /**
