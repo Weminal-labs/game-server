@@ -20,6 +20,10 @@ import {
   HeroResponse,
   UpdateHeroRequest,
   UpdateHeroResponse,
+  UpdateUserLevelRequest,
+  UpdateUserLevelResponse,
+  UpdateUserResourcesRequest,
+  UpdateUserResourcesResponse
 } from "../shared/interfaces";
 
 /**
@@ -86,6 +90,36 @@ export function useUpdateHeroMutation(): UseMutationResult<
       baseUri: () => "/api/update_hero",
       body: ({ keyPair, ...req }) => req,
       resultSchema: HeroResponse,
+    })
+  });
+}
+
+export function useUserResourcesMutation(): UseMutationResult<
+  UpdateUserResourcesResponse,
+  ApiError,
+  UpdateUserResourcesRequest & WithKeyPair
+>{
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: apiTxExecMutationFn({
+      baseUri: () => "/api/update_player_resources",
+      body: ({ keyPair, ...req }) => req,
+      resultSchema: UpdateUserResourcesResponse,
+    })
+  });
+}
+
+export function useUserLevelMutation(): UseMutationResult<
+  UpdateUserLevelResponse,
+  ApiError,
+  UpdateUserLevelRequest & WithKeyPair
+>{
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: apiTxExecMutationFn({
+      baseUri: () => "/api/update_player_level",
+      body: ({ keyPair, ...req }) => req,
+      resultSchema: UpdateUserLevelResponse,
     })
   });
 }

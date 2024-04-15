@@ -102,11 +102,7 @@ export type UpdateUserResourcesRequest = Infer<
   typeof UpdateUserResourcesRequest
 >;
 
-export const UpdateUserResourcesResult = object({
-  hero_id: string(),
-  id: string(),
-  owner: string(),
-});
+export const UpdateUserResourcesResult = object({});
 
 export type UpdateUserResourcesResult = Infer<typeof UpdateUserResourcesResult>;
 
@@ -141,21 +137,23 @@ export type UpdateUserLevelResponse = Infer<typeof UpdateUserLevelResponse>;
 
 //update hero
 export const UpdateHeroRequest = object({
-  data: array(object({
-    id: string(),
-    name: string(),
-    description: string(),
-    location_x: integer() || undefined,
-    location_y: integer() || undefined,
-    health: integer(),
-    max_health: integer(),
-    damage: integer(),
-    speed: integer(),
-    level: integer(),
-    exp: integer(),
-    max_exp: integer(),
-    hero_id: string(),
-  })),
+  data: array(
+    object({
+      id: string(),
+      name: string(),
+      description: string(),
+      location_x: integer() || undefined,
+      location_y: integer() || undefined,
+      health: integer(),
+      max_health: integer(),
+      damage: integer(),
+      speed: integer(),
+      level: integer(),
+      exp: integer(),
+      max_exp: integer(),
+      hero_id: string(),
+    })
+  ),
 });
 
 export type UpdateHeroRequest = Infer<typeof UpdateHeroRequest>;
