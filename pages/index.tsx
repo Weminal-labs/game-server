@@ -42,7 +42,7 @@ export default function Index() {
     codeUrl: "Build/Scorpion.wasm",
   });
   const [result, setResult] = useState<WeatherResponse>();
-  const [playerData, setPlayerData] = useState<PlayerDataResponse>();
+  const [playerData, setPlayerData] = useState<any>();
   const [weather, setWeather] = useState<any>();
   const [listMob, setListMob] = useState<any>();
 
@@ -71,8 +71,6 @@ export default function Index() {
 
   useEffect(() => {
     if (playerData && weather) {
-      // sendMessage("GameControll", "ReceiveWeather", JSON.stringify(weather));
-      // sendMessage("GameControll", "ReceiveAddress", JSON.stringify(playerData));
       sendMessage("GameControll", "stopLoadingScreen");
     }
   }, [playerData, weather, listMob]);
@@ -178,31 +176,44 @@ export default function Index() {
   };
 
   const handleRequestId = (json: any, id: any) => {
-    console.log("Request Id", json, id);
+    console.log("Request Id", json, id, playerData);
     const heroData = JSON.parse(json);
     if (!localSession) {
       console.log("Local session not found");
       return;
     }
 
-    getNewHero({
-      type_hero: heroData.type_hero,
-      max_health: heroData.max_health,
-      damage: heroData.damage,
-      speed: heroData.speed,
-      exp: heroData.exp,
-      max_exp: heroData.max_exp,
-      name: heroData.name,
-      description: heroData.description,
-      url: URL_AVATAR_HERO[heroData.type_hero],
+    console.log("New Hero player", playerData);
+    if (!playerData) {
+      console.log("Player data not found");
+      return;
+    }
+    updateUserResources({
+      gold: playerData.curGold,
+      meat: playerData.curMeat,
+      wood: playerData.curWood,
       keyPair: localSession.ephemeralKeyPair,
     }).then((data) => {
-      console.log("New Hero", data);
-      sendMessage(
-        "DataMob",
-        "LoadNewIdForMob",
-        JSON.stringify({ id: data.id, fakeid: id, id_txb: data.txDigest })
-      );
+      console.log("Update Resources", data);
+      getNewHero({
+        type_hero: heroData.type_hero,
+        max_health: heroData.max_health,
+        damage: heroData.damage,
+        speed: heroData.speed,
+        exp: heroData.exp,
+        max_exp: heroData.max_exp,
+        name: heroData.name,
+        description: heroData.description,
+        url: URL_AVATAR_HERO[heroData.type_hero],
+        keyPair: localSession.ephemeralKeyPair,
+      }).then((data) => {
+        console.log("New Hero", data);
+        sendMessage(
+          "DataMob",
+          "LoadNewIdForMob",
+          JSON.stringify({ id: data.id, fakeid: id, id_txb: data.txDigest })
+        );
+      });
     });
   };
 
@@ -271,16 +282,12 @@ export default function Index() {
       return;
     }
 
-    let filter_data = data.data.filter((hero) => {
-      return hero.health !== 0;
-    });
-
-    updateHero({
-      data: filter_data,
-      keyPair: localSession.ephemeralKeyPair,
-    }).then((data) => {
-      console.log("Update Hero", data);
-    });
+    // updateHero({
+    //   ...data,
+    //   keyPair: localSession.ephemeralKeyPair,
+    // }).then((data) => {
+    //   console.log("Update Hero", data);
+    // });
   };
 
   useEffect(() => {
