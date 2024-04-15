@@ -5,13 +5,20 @@ import { AUTH_API_BASE, LOGIN_PAGE_PATH } from "@shinami/nextjs-zklogin";
 import { useZkLoginSession } from "@shinami/nextjs-zklogin/client";
 import { useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import { PlayerDataResponse, WeatherResponse } from "@/lib/shared/interfaces";
+import {
+  PlayerDataResponse,
+  WeatherResponse,
+  UpdateUserLevelRequest,
+  UpdateUserResourcesRequest,
+} from "@/lib/shared/interfaces";
 import { useState } from "react";
 import {
   useWeatherMutation,
   usePlayerDataMutation,
   useNewHeroMutation,
   useUpdateHeroMutation,
+  useUserLevelMutation,
+  useUserResourcesMutation,
 } from "@/lib/hooks/api";
 import getWeatherCity from "@/utils/getWeather";
 import { URL_AVATAR_HERO } from "@/lib/shared/enum";
@@ -46,6 +53,12 @@ export default function Index() {
     useNewHeroMutation();
   const { mutateAsync: updateHero, isPending: isUpdatingHero } =
     useUpdateHeroMutation();
+  const { mutateAsync: updateUserLevel, isPending: isUpdatingUserLevel } =
+    useUserLevelMutation();
+  const {
+    mutateAsync: updateUserResources,
+    isPending: isUpdatingUserResources,
+  } = useUserResourcesMutation();
   const [isRequiresData, setIsRequiresData] = useState(false);
 
   //check if user is logged in then start the game
@@ -111,27 +124,32 @@ export default function Index() {
               });
               Promise.all(hero_list).then(function (results) {
                 console.log(results);
-                const mob_list = results.filter((mob) => mob !== undefined).map((mob: any) => {
-                  return {
-                    location_x: mob.fields.location_x,
-                    location_y: mob.fields.location_y,
-                    id: mob.fields.id.id,
-                    type_hero: mob.fields.type_hero,
-                    level: mob.fields.level,
-                    health: mob.fields.health,
-                    max_health: mob.fields.max_health,
-                    damage: mob.fields.damage,
-                    speed: mob.fields.speed,
-                    exp: mob.fields.exp,
-                    max_exp: mob.fields.max_exp,
-                    name: mob.fields.name,
-                    description: mob.fields.description,
-                    url: URL_AVATAR_HERO[mob.fields.type_hero],
-                    
-                  };
-                });
+                const mob_list = results
+                  .filter((mob) => mob !== undefined)
+                  .map((mob: any) => {
+                    return {
+                      location_x: mob.fields.location_x,
+                      location_y: mob.fields.location_y,
+                      id: mob.fields.id.id,
+                      type_hero: mob.fields.type_hero,
+                      level: mob.fields.level,
+                      health: mob.fields.health,
+                      max_health: mob.fields.max_health,
+                      damage: mob.fields.damage,
+                      speed: mob.fields.speed,
+                      exp: mob.fields.exp,
+                      max_exp: mob.fields.max_exp,
+                      name: mob.fields.name,
+                      description: mob.fields.description,
+                      url: URL_AVATAR_HERO[mob.fields.type_hero],
+                    };
+                  });
                 setListMob(mob_list);
-                sendMessage("DataMob", "loadMobExist", JSON.stringify(mob_list));
+                sendMessage(
+                  "DataMob",
+                  "loadMobExist",
+                  JSON.stringify(mob_list)
+                );
               });
             }
           );
@@ -191,9 +209,47 @@ export default function Index() {
     console.log("Save Mob", json);
   }, []);
 
-  const handleSavePlayer = useCallback((json: any) => {
-    console.log("Save Player", json);
-  }, []);
+  const handleSavePlayer = useCallback(
+    (json: any) => {
+      console.log("Save Player", json, playerData);
+      if (!localSession) {
+        console.log("Local session not found");
+        return;
+      }
+
+      if (!playerData) {
+        console.log("Player data not found");
+        return;
+      }
+
+      const player_request_update = JSON.parse(json);
+      console.log("Player request update", player_request_update);
+      // if (playerData.level < player_request_update.lv) {
+      //   console.log("Update Level");
+
+      //   updateUserLevel({
+      //     exp: player_request_update.exp,
+      //     max_exp: player_request_update.maxExp,
+      //     level: player_request_update.lv,
+      //     keyPair: localSession.ephemeralKeyPair,
+      //   }).then((data) => {
+      //     console.log("Update Level", data);
+      //   });
+
+      //   updateUserResources({
+      //     gold: player_request_update.curGold,
+      //     meat: player_request_update.curMeat,
+      //     wood: player_request_update.curWood,
+      //     keyPair: localSession.ephemeralKeyPair,
+      //   }).then((data) => {
+      //     console.log("Update Resources", data);
+      //   })
+
+      //   setPlayerData(player_request_update)
+      // }
+    },
+    [playerData]
+  );
 
   const handleSaveListMob = (json: any) => {
     console.log("Save list mob", json);
@@ -240,11 +296,11 @@ export default function Index() {
       //patching the event save mob from game
       addEventListener("SaveMob", handleSaveMob);
 
-      //patching the event save player from game
-      addEventListener("SavePlayer", handleSavePlayer);
-
       //patching the event save list mob from game
       addEventListener("SaveListMob", handleSaveListMob);
+
+      //patching the event save player from game
+      addEventListener("SavePlayer", handleSavePlayer);
     }
 
     return () => {
@@ -256,7 +312,13 @@ export default function Index() {
       removeEventListener("SavePlayer", handleSavePlayer);
       removeEventListener("SaveListMob", handleSaveListMob);
     };
-  }, [addEventListener, removeEventListener, handleLogin, localSession]);
+  }, [
+    addEventListener,
+    removeEventListener,
+    handleLogin,
+    localSession,
+    playerData,
+  ]);
 
   return (
     <>
