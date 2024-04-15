@@ -126,6 +126,7 @@ export default function Index() {
                 console.log(results);
                 const mob_list = results
                   .filter((mob) => mob !== undefined)
+                  .filter((mob) => mob.fields.health !== 0)
                   .map((mob: any) => {
                     return {
                       location_x: mob.fields.location_x,
@@ -224,29 +225,27 @@ export default function Index() {
 
       const player_request_update = JSON.parse(json);
       console.log("Player request update", player_request_update);
-      // if (playerData.level < player_request_update.lv) {
-      //   console.log("Update Level");
+      console.log("Update Level");
 
-      //   updateUserLevel({
-      //     exp: player_request_update.exp,
-      //     max_exp: player_request_update.maxExp,
-      //     level: player_request_update.lv,
-      //     keyPair: localSession.ephemeralKeyPair,
-      //   }).then((data) => {
-      //     console.log("Update Level", data);
-      //   });
+      updateUserLevel({
+        exp: player_request_update.exp,
+        max_exp: player_request_update.maxExp,
+        level: player_request_update.lv,
+        keyPair: localSession.ephemeralKeyPair,
+      }).then((data) => {
+        console.log("Update Level", data);
+      });
 
-      //   updateUserResources({
-      //     gold: player_request_update.curGold,
-      //     meat: player_request_update.curMeat,
-      //     wood: player_request_update.curWood,
-      //     keyPair: localSession.ephemeralKeyPair,
-      //   }).then((data) => {
-      //     console.log("Update Resources", data);
-      //   })
+      updateUserResources({
+        gold: player_request_update.curGold,
+        meat: player_request_update.curMeat,
+        wood: player_request_update.curWood,
+        keyPair: localSession.ephemeralKeyPair,
+      }).then((data) => {
+        console.log("Update Resources", data);
+      });
 
-      //   setPlayerData(player_request_update)
-      // }
+      setPlayerData(player_request_update);
     },
     [playerData]
   );
@@ -272,11 +271,16 @@ export default function Index() {
       return;
     }
 
-    updateHero({ ...data, keyPair: localSession.ephemeralKeyPair }).then(
-      (data) => {
-        console.log("Update Hero", data);
-      }
-    );
+    let filter_data = data.data.filter((hero) => {
+      return hero.health !== 0;
+    });
+
+    updateHero({
+      data: filter_data,
+      keyPair: localSession.ephemeralKeyPair,
+    }).then((data) => {
+      console.log("Update Hero", data);
+    });
   };
 
   useEffect(() => {

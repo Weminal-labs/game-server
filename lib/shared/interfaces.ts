@@ -139,7 +139,7 @@ export type UpdateUserLevelResponse = Infer<typeof UpdateUserLevelResponse>;
 export const UpdateHeroRequest = object({
   data: array(
     object({
-      id: string(),
+      type_hero: integer(),
       name: string(),
       description: string(),
       location_x: integer() || undefined,
@@ -151,7 +151,7 @@ export const UpdateHeroRequest = object({
       level: integer(),
       exp: integer(),
       max_exp: integer(),
-      hero_id: string(),
+      id: string(),
     })
   ),
 });
