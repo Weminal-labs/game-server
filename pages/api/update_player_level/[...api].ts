@@ -26,8 +26,8 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
       txb.moveCall({
         target: `${MOVE_PACKAGE_ID}::game::update_player_level`,
         arguments: [
-          txb.pure.u16(body.exp),
-          txb.pure.u32(body.level),
+          txb.pure.u16(body.level),
+          txb.pure.u32(body.exp),
           txb.pure.u32(body.max_exp),
           txb.object(MOVE_OBJECT_ID),
         ],

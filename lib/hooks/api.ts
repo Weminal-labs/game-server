@@ -89,7 +89,7 @@ export function useUpdateHeroMutation(): UseMutationResult<
     mutationFn: apiTxExecMutationFn({
       baseUri: () => "/api/update_hero",
       body: ({ keyPair, ...req }) => req,
-      resultSchema: HeroResponse,
+      resultSchema: UpdateHeroResponse,
     })
   });
 }

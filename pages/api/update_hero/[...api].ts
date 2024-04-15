@@ -22,23 +22,20 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
   const gaslessTxBytes = await buildGaslessTransactionBytes({
     sui,
     build: async (txb) => {
-      body.data.forEach((hero) => {
-        txb.moveCall({
-          target: `${MOVE_PACKAGE_ID}::game::update_hero`,
-          arguments: [
-            txb.pure.u16(hero.location_x < 0 ? 0 : hero.location_x),
-            txb.pure.u16(hero.location_y < 0 ? 0 : hero.location_y),
-            txb.pure.u16(hero.health),
-            txb.pure.u16(hero.max_health),
-            txb.pure.u16(hero.damage),
-            txb.pure.u16(hero.speed),
-            txb.pure.u16(hero.level),
-            txb.pure.u16(hero.exp),
-            txb.pure.u16(hero.max_exp),
-            txb.object(hero.id),
-            txb.object(MOVE_OBJECT_ID),
-          ],
-        });
+      txb.moveCall({
+        target: `${MOVE_PACKAGE_ID}::game::update_hero`,
+        arguments: [
+          txb.pure.u16(body.data[4].location_x < 0 ? 0 : body.data[4].location_x),
+          txb.pure.u16(body.data[4].location_y < 0 ? 0 : body.data[4].location_y),
+          txb.pure.u16(body.data[4].health),
+          txb.pure.u16(body.data[4].max_health),
+          txb.pure.u16(body.data[4].damage),
+          txb.pure.u16(body.data[4].speed),
+          txb.pure.u16(body.data[4].level),
+          txb.pure.u16(body.data[4].exp),
+          txb.pure.u16(body.data[4].max_exp),
+          txb.object(body.data[4].id),
+        ],
       });
     },
   });
