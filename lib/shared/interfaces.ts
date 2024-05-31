@@ -43,13 +43,8 @@ export const PlayerDataRequest = object({});
 export type PlayerDataRequest = Infer<typeof PlayerDataRequest>;
 
 export const PlayerDataResult = object({
-  exp: integer(),
-  gold: integer(),
   id: string(),
-  level: integer(),
-  max_exp: integer(),
-  meat: integer(),
-  wood: integer(),
+  score: string(),
 });
 
 export type PlayerDataResult = Infer<typeof PlayerDataResult>;
@@ -61,113 +56,104 @@ export const PlayerDataResponse = object({
 
 export type PlayerDataResponse = Infer<typeof PlayerDataResponse>;
 
-//new hero
-export const HeroRequest = object({
-  type_hero: integer(),
-  max_health: integer(),
-  damage: integer(),
-  speed: integer(),
-  exp: integer(),
-  max_exp: integer(),
+//update_score
+export const UpdateScoreRequest = object({
+  score: integer(),
+});
+
+export type UpdateScoreRequest = Infer<typeof UpdateScoreRequest>;
+
+export const UpdateScoreResult = object({});
+
+export type UpdateScoreResult = Infer<typeof UpdateScoreResult>;
+
+export const UpdateScoreResponse = object({
+  ...UpdateScoreResult.schema,
+  txDigest: string(),
+});
+
+export type UpdateScoreResponse = Infer<typeof UpdateScoreResponse>;
+
+//claim
+export const ClaimRequest = object({
+  amount: integer(),
+});
+
+export type ClaimRequest = Infer<typeof ClaimRequest>;
+
+export const ClaimResult = object({});
+
+export type ClaimResult = Infer<typeof ClaimResult>;
+
+export const ClaimResponse = object({
+  ...ClaimResult.schema,
+  txDigest: string(),
+});
+
+export type ClaimResponse = Infer<typeof ClaimResponse>;
+
+//claim-reward
+export const ClaimRewardRequest = object({
+  id: integer(),
+});
+
+export type ClaimRewardRequest = Infer<typeof ClaimRewardRequest>;
+
+export const ClaimRewardResult = object({});
+
+export type ClaimRewardResult = Infer<typeof ClaimRewardResult>;
+
+export const ClaimRewardResponse = object({
+  ...ClaimResult.schema,
+  txDigest: string(),
+});
+
+export type ClaimRewardResponse = Infer<typeof ClaimResponse>;
+
+//update process
+export const UpdateProcessRequest = object({
+  mission_id: integer(),
+  process: integer(),
+});
+
+export type UpdateProcessRequest = Infer<typeof UpdateProcessRequest>;
+
+export const UpdateProcessResult = object({});
+
+export type UpdateProcessResult = Infer<typeof UpdateProcessResult>;
+
+export const UpdateProcessResponse = object({
+  ...ClaimResult.schema,
+  txDigest: string(),
+});
+
+export type UpdateProcessResponse = Infer<typeof ClaimResponse>;
+
+//purchase
+export const PurchaseRequest = object({
+  id_hero: integer(),
   name: string(),
   description: string(),
-  url: string(),
+  img: string(),
+  price: integer(),
+  money: array(string()),
 });
 
-export type HeroRequest = Infer<typeof HeroRequest>;
+export type PurchaseRequest = Infer<typeof PurchaseRequest>;
 
-export const HeroResult = object({
-  hero_id: string(),
+export const PurchaseResult = object({
   id: string(),
-  owner: string(),
+  hero_id: string(),
 });
 
-export type HeroResult = Infer<typeof HeroResult>;
+export type PurchaseResult = Infer<typeof PurchaseResult>;
 
-export const HeroResponse = object({
-  ...HeroResult.schema,
+export const PurchaseResponse = object({
+  ...ClaimResult.schema,
   txDigest: string(),
 });
 
-export type HeroResponse = Infer<typeof HeroResponse>;
-
-//user resources
-export const UpdateUserResourcesRequest = object({
-  wood: integer(),
-  gold: integer(),
-  meat: integer(),
-});
-
-export type UpdateUserResourcesRequest = Infer<
-  typeof UpdateUserResourcesRequest
->;
-
-export const UpdateUserResourcesResult = object({});
-
-export type UpdateUserResourcesResult = Infer<typeof UpdateUserResourcesResult>;
-
-export const UpdateUserResourcesResponse = object({
-  ...UpdateUserResourcesResult.schema,
-  txDigest: string(),
-});
-
-export type UpdateUserResourcesResponse = Infer<
-  typeof UpdateUserResourcesResponse
->;
-
-//user level
-export const UpdateUserLevelRequest = object({
-  level: integer(),
-  exp: integer(),
-  max_exp: integer(),
-});
-
-export type UpdateUserLevelRequest = Infer<typeof UpdateUserLevelRequest>;
-
-export const UpdateUserLevelResult = object({});
-
-export type UpdateUserLevelResult = Infer<typeof UpdateUserLevelResult>;
-
-export const UpdateUserLevelResponse = object({
-  ...UpdateUserLevelResult.schema,
-  txDigest: string(),
-});
-
-export type UpdateUserLevelResponse = Infer<typeof UpdateUserLevelResponse>;
-
-//update hero
-export const UpdateHeroRequest = object({
-  data: array(
-    object({
-      type_hero: integer(),
-      name: string(),
-      description: string(),
-      location_x: integer() || undefined,
-      location_y: integer() || undefined,
-      health: integer(),
-      max_health: integer(),
-      damage: integer(),
-      speed: integer(),
-      level: integer(),
-      exp: integer(),
-      max_exp: integer(),
-      id: string(),
-    })
-  ),
-});
-
-export type UpdateHeroRequest = Infer<typeof UpdateHeroRequest>;
-
-export const UpdateHeroResult = object({});
-
-export type UpdateHeroResult = Infer<typeof UpdateHeroResult>;
-
-export const UpdateHeroResponse = object({
-  ...UpdateHeroResult.schema,
-  txDigest: string(),
-});
-
-export type UpdateHeroResponse = Infer<typeof UpdateHeroResponse>;
+export type PurchaseResponse = Infer<typeof ClaimResponse>;
 
 export const RecentTxsResponse = object({
   txDigests: array(string()),

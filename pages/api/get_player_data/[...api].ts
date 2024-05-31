@@ -25,7 +25,7 @@ const buildTx: GaslessTransactionBytesBuilder = async (req, { wallet }) => {
     sui,
     build: async (txb) => {
       txb.moveCall({
-        target: `${MOVE_PACKAGE_ID}::game::get_player_data`,
+        target: `${MOVE_PACKAGE_ID}::wecastle::get_player_data`,
         arguments: [
           txb.object(MOVE_OBJECT_ID),
         ],

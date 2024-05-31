@@ -12,18 +12,18 @@ import {
 import { mask } from "superstruct";
 import {
   RecentTxsResponse,
-  WeatherRequest,
-  WeatherResponse,
   PlayerDataRequest,
   PlayerDataResponse,
-  HeroRequest,
-  HeroResponse,
-  UpdateHeroRequest,
-  UpdateHeroResponse,
-  UpdateUserLevelRequest,
-  UpdateUserLevelResponse,
-  UpdateUserResourcesRequest,
-  UpdateUserResourcesResponse
+  UpdateScoreRequest,
+  UpdateScoreResponse,
+  ClaimRequest,
+  ClaimResponse,
+  ClaimRewardRequest,
+  ClaimRewardResponse,
+  UpdateProcessResponse,
+  UpdateProcessRequest,
+  PurchaseResponse,
+  PurchaseRequest
 } from "../shared/interfaces";
 
 /**
@@ -34,113 +34,96 @@ import {
  * - Sign the transaction block with the local ephemeral key pair.
  * - Call /api/add/exec to assemble the zkLogin signature and execute the signed transaction block.
  */
-export function useWeatherMutation(): UseMutationResult<
-  WeatherResponse,
-  ApiError,
-  WeatherRequest & WithKeyPair
->{
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: apiTxExecMutationFn({
-      baseUri: () => "/api/weather",
-      body: ({ keyPair, ...req }) => req,
-      resultSchema: WeatherResponse,
-    })
-  });
-}
 
 export function usePlayerDataMutation(): UseMutationResult<
   PlayerDataResponse,
   ApiError,
   PlayerDataRequest & WithKeyPair
->{
+> {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: apiTxExecMutationFn({
       baseUri: () => "/api/get_player_data",
       body: ({ keyPair, ...req }) => req,
       resultSchema: PlayerDataResponse,
-    })
+    }),
   });
 }
 
-export function useNewHeroMutation(): UseMutationResult<
-  HeroResponse,
+export function useUpdateScoreMutation(): UseMutationResult<
+  UpdateScoreResponse,
   ApiError,
-  HeroRequest & WithKeyPair
->{
+  UpdateScoreRequest & WithKeyPair
+> {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: apiTxExecMutationFn({
-      baseUri: () => "/api/new_hero",
+      baseUri: () => "/api/update_score",
       body: ({ keyPair, ...req }) => req,
-      resultSchema: HeroResponse,
-    })
+      resultSchema: UpdateScoreResponse,
+    }),
   });
 }
 
-export function useUpdateHeroMutation(): UseMutationResult<
-  UpdateHeroResponse,
+export function useClaimMutation(): UseMutationResult<
+  ClaimResponse,
   ApiError,
-  UpdateHeroRequest & WithKeyPair
->{
+  ClaimRequest & WithKeyPair
+> {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: apiTxExecMutationFn({
-      baseUri: () => "/api/update_hero",
+      baseUri: () => "/api/claim",
       body: ({ keyPair, ...req }) => req,
-      resultSchema: UpdateHeroResponse,
-    })
+      resultSchema: ClaimResponse,
+    }),
   });
 }
 
-export function useUserResourcesMutation(): UseMutationResult<
-  UpdateUserResourcesResponse,
+export function useClaimRewardMutation(): UseMutationResult<
+  ClaimRewardResponse,
   ApiError,
-  UpdateUserResourcesRequest & WithKeyPair
->{
+  ClaimRewardRequest & WithKeyPair
+> {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: apiTxExecMutationFn({
-      baseUri: () => "/api/update_player_resources",
+      baseUri: () => "/api/claim_reward",
       body: ({ keyPair, ...req }) => req,
-      resultSchema: UpdateUserResourcesResponse,
-    })
+      resultSchema: ClaimRewardResponse,
+    }),
   });
 }
 
-export function useUserLevelMutation(): UseMutationResult<
-  UpdateUserLevelResponse,
+export function useUpdateProcessMutation(): UseMutationResult<
+  UpdateProcessResponse,
   ApiError,
-  UpdateUserLevelRequest & WithKeyPair
->{
+  UpdateProcessRequest & WithKeyPair
+> {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: apiTxExecMutationFn({
-      baseUri: () => "/api/update_player_level",
+      baseUri: () => "/api/update_process",
       body: ({ keyPair, ...req }) => req,
-      resultSchema: UpdateUserLevelResponse,
-    })
+      resultSchema: UpdateProcessResponse,
+    }),
   });
 }
 
-// export function useAddMutation(): UseMutationResult<
-//   AddResponse,
-//   ApiError,
-//   AddRequest & WithKeyPair
-// > {
-//   const qc = useQueryClient();
-//   return useMutation({
-//     mutationFn: apiTxExecMutationFn({
-//       baseUri: () => "/api/add",
-//       body: ({ keyPair, ...req }) => req,
-//       resultSchema: AddResponse,
-//     }),
-//     onSuccess: () => {
-//       qc.invalidateQueries({ queryKey: ["api", "recent_txs"] });
-//     },
-//   });
-// }
+export function usePurchaseMutation(): UseMutationResult<
+  PurchaseResponse,
+  ApiError,
+  PurchaseRequest & WithKeyPair
+> {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: apiTxExecMutationFn({
+      baseUri: () => "/api/purchase",
+      body: ({ keyPair, ...req }) => req,
+      resultSchema: PurchaseResponse,
+    }),
+  });
+}
 
 /**
  * An example query to fetch recent transactions from the user's wallet address.
