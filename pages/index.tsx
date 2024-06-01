@@ -196,32 +196,21 @@ export default function Index() {
     sendMessage("GameController", "Logout");
   }, []);
 
-  ////////testtttt
-  useEffect(() => {
-    if (!localSession) return;
-    getPlayerData({ keyPair: localSession.ephemeralKeyPair }).then(
-      (data: PlayerDataResponse) => {
-        console.log("Player Data", data);
-      }
-    );
-
-    // claim({
-    //   amount: 100 * 1000000000,
-    //   keyPair: localSession.ephemeralKeyPair,
-    // }).then((data: ClaimResponse) => {
-    //   console.log("claim", data);
-    // });
-  }, [localSession, listCoin]);
-
   const handleGetLobby = () => {
     setIsRequiresData(true);
   };
 
   const handleRequestCoin = () => {
+    if(listCoin.length === 0) return;
+    let totalCoin =
+      listCoin.reduce((acc, item) => {
+        return acc + item.fields.balance;
+      }, 0) / 1000000;
 
+    sendMessage("HeroSelect", "EditCoinGame", totalCoin);
   };
 
-  const handleRequestUpdateCoin = (coin: number) => {
+  const handleRequestUpdateCoin = (coin: any) => {
     console.log("coin", coin);
     if (!localSession) return;
 
@@ -240,6 +229,16 @@ export default function Index() {
     }).then((data: PurchaseResponse) => {});
   };
 
+  const handlePushRewardForPlayer = (coin: any) => {
+    if (!localSession) return;
+    claim({
+      amount: coin * 1000000000,
+      keyPair: localSession.ephemeralKeyPair,
+    }).then((data: ClaimResponse) => {
+      console.log("claim", data);
+    });
+  };
+
   useEffect(() => {
     //patching the event login
     addEventListener("RequestLogin", handleLogin);
@@ -255,6 +254,8 @@ export default function Index() {
 
       //patching the event request update coin
       addEventListener("RequestUpdateCoin", handleRequestUpdateCoin);
+
+      addEventListener("PushRewardForPlayer", handlePushRewardForPlayer);
     }
 
     return () => {
@@ -263,6 +264,7 @@ export default function Index() {
       removeEventListener("RequestLobby", handleGetLobby);
       removeEventListener("RequestCoin", handleRequestCoin);
       removeEventListener("RequestUpdateCoin", handleRequestUpdateCoin);
+      removeEventListener("PushRewardForPlayer", handlePushRewardForPlayer);
     };
   }, [
     addEventListener,
