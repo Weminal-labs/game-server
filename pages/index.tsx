@@ -105,7 +105,7 @@ export default function Index() {
 
           let totalCoin =
             listCoin.reduce((acc, item) => {
-              return acc + item.fields.balance;
+              return acc + Number(item.fields.balance);
             }, 0) / 1000000;
 
           let herosId = heros
@@ -204,7 +204,7 @@ export default function Index() {
     if(listCoin.length === 0) return;
     let totalCoin =
       listCoin.reduce((acc, item) => {
-        return acc + item.fields.balance;
+        return acc + Number(item.fields.balance);
       }, 0) / 1000000;
 
     sendMessage("HeroSelect", "EditCoinGame", totalCoin);
@@ -232,7 +232,7 @@ export default function Index() {
   const handlePushRewardForPlayer = (coin: any) => {
     if (!localSession) return;
     claim({
-      amount: coin * 1000000000,
+      amount: coin * 1000000,
       keyPair: localSession.ephemeralKeyPair,
     }).then((data: ClaimResponse) => {
       console.log("claim", data);
