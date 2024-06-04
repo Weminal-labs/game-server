@@ -63,7 +63,7 @@ export default function Index() {
   });
   const [playerData, setPlayerData] = useState<any>();
   const [weather, setWeather] = useState<any>();
-  const [listCoin, setListCoin] = useState<any[]>([]);
+  const [listCoin, setListCoin] = useState<any[] | undefined>([]);
   const [heros, setHeros] = useState<any[]>([]);
   const { mutateAsync: getPlayerData, isPending: isGettingData } =
     usePlayerDataMutation();
@@ -90,7 +90,8 @@ export default function Index() {
 
   //send data when start game
   useEffect(() => {
-    if (localSession && isRequiresData && listCoin.length > 0) {
+    if (localSession && isRequiresData) {
+      if (!listCoin) return;
       //get weather data
       // getWeatherCity().then((data) => {
       //   setWeather(data);
@@ -201,7 +202,8 @@ export default function Index() {
   };
 
   const handleRequestCoin = () => {
-    if(listCoin.length === 0) return;
+    if (!listCoin) return;
+    if (listCoin.length === 0) return;
     let totalCoin =
       listCoin.reduce((acc, item) => {
         return acc + Number(item.fields.balance);
@@ -212,6 +214,7 @@ export default function Index() {
 
   const handleRequestUpdateCoin = (coin: any) => {
     console.log("coin", coin);
+    if (!listCoin) return;
     if (!localSession) return;
 
     let hero =
